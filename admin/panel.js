@@ -321,7 +321,7 @@ function lookSection(s) {
   const custom = look.custom && th.palette === 'custom';
   return [
     el('p', { class: 'hint' }, 'Change how every page looks. Your words and pictures stay as they are.'),
-    el('label', {}, 'Design'), el('div', { class: 'seg' }, Object.entries(look.styles).map(([k, d]) => el('button', { class: th.style === k ? 'on' : '', onclick: pick('style', k) }, d.name))),
+    el('label', {}, 'Design'), el('div', { class: 'seg wraps' }, Object.entries(look.styles).map(([k, d]) => el('button', { class: th.style === k ? 'on' : '', onclick: pick('style', k) }, d.name))),
     look.styles[th.style] ? el('p', { class: 'hint' }, look.styles[th.style].hint) : '',
     el('label', {}, 'Colours'), el('div', { class: 'palettes' }, look.palettes.map((p) => el('button', { class: 'pal' + (th.palette === p.id ? ' on' : ''), onclick: pick('palette', p.id), title: p.name },
       el('span', { class: 'sw2' }, el('i', { style: `background:${p.primary}` }), el('i', { style: `background:${p.accent}` })), p.name)),
