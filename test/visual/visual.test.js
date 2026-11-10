@@ -12,7 +12,8 @@ const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
-const { setup } = require('../helpers');
+const { setup, seed } = require('../helpers');
+const { DESIGNS } = require('../../lib/theme');
 
 let chromium = null;
 for (const m of ['playwright', '@playwright/test']) { try { chromium = require(m).chromium; break; } catch { /* try the next */ } }
@@ -99,6 +100,49 @@ test('visual: pages match their baselines', { skip: chromium ? false : 'Playwrig
       }
       await ctx.close();
     }
+  } finally { await browser.close(); }
+});
+
+// The baselines above cover the demo chapter's design. Every design must still fit a phone: all blocks, the home
+// page and item pages, as visitors see them and inside the editor (where each section sits in a wrapper with an
+// "add section" bar before it). Designs listed in LONG_NAMES_FIT are also checked with a long chapter name and long
+// words in headings, which Master Plan and Riso Zine don't fully handle yet.
+const LONG_NAMES_FIT = ['skyline', 'blockparty', 'midrise'];
+test('visual: no design scrolls sideways on a phone', { skip: chromium ? false : 'Playwright is not installed' }, async (t) => {
+  const browser = await chromium.launch();
+  try {
+    const ctx = await browser.newContext({ viewport: SIZES.phone, deviceScaleFactor: 1, reducedMotion: 'reduce' });
+    await ctx.route(/^https?:/, (r) => r.abort());
+    const page = await ctx.newPage();
+    const frame = `<style>${fs.readFileSync(path.join(__dirname, '../../admin/frame.css'), 'utf8')}</style>`;
+    const check = async (style, long) => {
+      const data = seed(), d = data.demo;
+      d.site.theme = { ...d.site.theme, style };
+      if (long) {
+        d.site.name = 'Northwest Arkansas and Fayetteville Metropolitan Chapter';
+        d['page/home'].blocks[0].props.heading = 'Transportation infrastructure.\nNeighborhood revitalization.';
+        d['item/events/voter-registration-drive'].title = 'Transportation Infrastructure Subcommittee Listening Session';
+        d['item/people/alex-rivera'].name = 'Alexandria Montgomery-Featherstonehaugh';
+      }
+      const c = setup({ at: NOW.toISOString(), data }).cms;
+      const pages = {
+        gallery: await c.gallery('demo'),
+        home: (await c.renderLive('demo', '')).html,
+        about: (await c.renderLive('demo', 'about')).html,
+        event: (await c.renderLive('demo', 'events/voter-registration-drive')).html,
+        person: (await c.renderLive('demo', 'people/alex-rivera')).html,
+        'home in the editor': await c.renderPreview('demo', { ...d['page/home'], page: 'home', edit: true }, frame),
+      };
+      for (const [name, html] of Object.entries(pages)) {
+        await page.setContent(inline(html), { waitUntil: 'load' });
+        const sideways = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
+        assert.ok(sideways <= 0, `${style}: ${name}${long ? ' with long names' : ''} scrolls sideways by ${sideways}px at ${SIZES.phone.width}px wide`);
+      }
+    };
+    for (const style of Object.keys(DESIGNS)) {
+      await t.test(style, async () => { await check(style, false); if (LONG_NAMES_FIT.includes(style)) await check(style, true); });
+    }
+    await ctx.close();
   } finally { await browser.close(); }
 });
 

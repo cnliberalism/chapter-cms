@@ -21,6 +21,8 @@ header#top .pagepick{font-weight:600;max-width:22rem;overflow:hidden;text-overfl
 header#top .pill.ok{background:rgba(29,122,70,.55)}header#top .pill.warn{background:#8a5a00;border-color:#8a5a00}header#top .pill.bad{background:var(--bad);border-color:var(--bad)}
 header#top #checksBtn.bad{background:var(--bad);border-color:var(--bad)}header#top #checksBtn.warn{background:#8a5a00;border-color:#8a5a00}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}.seg button{border:0;border-radius:0}.seg button.on{background:var(--acc);color:#111}
+/* a choice with many options (the designs): whole names, wrapping onto more rows */
+.seg.wraps{display:flex;flex-wrap:wrap}.seg.wraps button{flex:1 1 auto;white-space:nowrap}
 header#top .seg{border-color:rgba(255,255,255,.28)}header#top .seg button{border:0;background:transparent}header#top .seg button.on{background:var(--acc);color:#111}
 .tag{display:inline-block;font-size:.72rem;font-weight:600;border-radius:999px;padding:.05rem .5rem;background:var(--bg);color:var(--mut);border:1px solid var(--line);vertical-align:middle}.tag.ok{background:var(--okbg);color:var(--ok);border-color:transparent}.tag.warn{background:var(--warnbg);color:var(--warn);border-color:transparent}.tag.muted{opacity:.75}
 header#top .tag{background:rgba(255,255,255,.18);color:#fff;border:0}
