@@ -169,9 +169,11 @@ test('every design has a stylesheet section, loads its own font and keeps chapte
   const T = require('../lib/theme');
   const css = require('fs').readFileSync(require('path').join(__dirname, '../static/site.css'), 'utf8');
   const val = (vars, name) => new RegExp(`--${name}:(#[0-9a-f]{6})`, 'i').exec(vars)[1];
-  for (const id of ['masterplan', 'riso', 'skyline', 'blockparty', 'midrise']) assert.ok(T.DESIGNS[id], `${id} is offered`);
+  for (const id of ['masterplan', 'riso', 'skyline', 'blockparty', 'midrise', 'blueprint']) assert.ok(T.DESIGNS[id], `${id} is offered`);
   for (const [id, d] of Object.entries(T.DESIGNS)) {
-    assert.ok(d.name && d.hint && /^#[0-9a-f]{6}$/i.test(d.ground), `${id} has a name, a hint for the picker and a ground colour`);
+    // ground: a colour, or (Blueprint) a function of the chapter's colours
+    const groundOf = (t) => (typeof d.ground === 'function' ? d.ground(t) : d.ground);
+    assert.ok(d.name && d.hint && /^#[0-9a-f]{6}$/i.test(groundOf({ accent: '#C23B4F', primary: '#2C3659' })), `${id} has a name, a hint for the picker and a ground colour`);
     assert.ok(css.includes(`.style-${id}{`) || css.includes(`.style-${id} `), `${id} has a section in static/site.css`);
     // the picked design reaches the page, with its font; the system pairing loads nothing from the network
     const data = seed(); data.demo.site.theme = { ...data.demo.site.theme, style: id, palette: 'green', fonts: 'archivo' };
@@ -184,7 +186,7 @@ test('every design has a stylesheet section, loads its own font and keeps chapte
     // whatever colours a chapter gets, the derived text colours pass on this design's ground and on dark panels
     for (const pal of [...T.PALETTES, { id: 'pale', primary: '#2C3659', accent: '#FFE27A' }, { id: 'dark', primary: '#1d2a22', accent: '#14324a' }]) {
       const vars = T.themeVars({ style: id, primary: pal.primary, accent: pal.accent, font: T.FONTS[0] });
-      assert.ok(T.contrast(val(vars, 'ch-text'), d.ground) >= 4.5, `${id}/${pal.id}: chapter-colour text on the page`);
+      assert.ok(T.contrast(val(vars, 'ch-text'), groundOf(pal)) >= 4.5, `${id}/${pal.id}: chapter-colour text on the page`);
       assert.ok(T.contrast(val(vars, 'ch-lite'), pal.primary) >= 4.5, `${id}/${pal.id}: chapter-colour text on dark panels`);
       assert.ok(T.contrast(val(vars, 'on-ch'), pal.accent) >= 3, `${id}/${pal.id}: text on the chapter colour`);
     }

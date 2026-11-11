@@ -865,3 +865,101 @@ footer{margin-top:72px;font-size:.95rem}footer p{margin:.2em 0}footer a{color:in
   .style-midrise main section.block.join{padding-bottom:188px}.style-midrise main section.block.join:after{right:22px;transform:scale(.7);transform-origin:100% 100%}.style-midrise .joinbox{padding-right:0}
   .style-midrise .quote blockquote{padding:28px 26px}.style-midrise footer>.wrap{padding:80px 16px 34px}.style-midrise footer>.wrap:before{left:0;right:0}.style-midrise footer>.wrap:after{left:38%;transform:scale(.8);transform-origin:0 100%}}
 @media(prefers-reduced-motion:reduce){.style-midrise .btn{transition:none}}
+
+/* ============ Blueprint (.style-blueprint) ============
+   White linework on a blueprint printed in the chapter's own colour: a square drafting grid, mono labels, numbered
+   sheets, callout bubbles and a title-block footer. A pale tint of the chapter colour is the redline markup. Decorations
+   come from CSS only, so the block markup is the same as the other designs. */
+.style-blueprint{--mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;--lw:1.5px}
+.style-blueprint .sign{font-stretch:118%;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.style-blueprint :is(.cap,nav a,.dd>summary,.btn,.kicker,.meta,.where,.evwhen,.flabel,.imore,.more,.sechead>a,.result,.tags a){font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;font-weight:500}
+.style-blueprint .cap{font-size:12px}
+.style-blueprint nav a,.style-blueprint .dd>summary{font-size:13px;border-bottom:1.5px solid transparent}
+.style-blueprint nav a[aria-current],.style-blueprint nav a:hover{border-bottom-color:var(--ch-text);color:var(--navy)}
+.style-blueprint .btn{font-size:13px;min-height:46px;border-width:1.5px;border-radius:0;background:transparent;color:var(--navy);border-color:var(--navy)}
+.style-blueprint .btn:hover{background:var(--navy);color:var(--ground)}
+.style-blueprint .btn.ch,.style-blueprint nav .navbtn{background:var(--ch);border:1.5px solid var(--ch);color:var(--on-ch)}
+.style-blueprint .btn.ch:hover,.style-blueprint nav .navbtn:hover{background:var(--navy);border-color:var(--navy);color:var(--ground)}
+.style-blueprint nav .navbtn{padding:0 18px;min-height:40px}
+/* numbered sheets: each section heading gets a drawing number */
+.style-blueprint main{counter-reset:sheet}
+.style-blueprint main>.block,.style-blueprint main>.blk>.block{counter-increment:sheet}
+.style-blueprint .block :is(.sechead h2,.wrap>h2,.slateintro h2,.jtext h2):before{content:"Sheet A-" counter(sheet,decimal-leading-zero);display:block;width:max-content;margin-bottom:12px;padding:3px 8px;border:1px solid currentColor;font:500 11px/1.4 var(--mono);letter-spacing:.12em;color:var(--ch-text)}
+.style-blueprint h2.sign{font-size:clamp(28px,3.2vw,42px)}
+/* hero drawing: the street map redrawn as linework, with a figure caption */
+.style-blueprint .heroart{border:var(--lw) solid var(--navy);padding:10px;background:transparent}
+.style-blueprint .heroart:after{content:"Fig. 1 \2014  Plan view \00B7  Scale 1:2400 \00B7  North \2191";display:block;margin-top:10px;font:500 11px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.style-blueprint .heroph{border:1px solid var(--navy)}
+.style-blueprint .map :is(rect:not([fill^="url"]),path,circle){fill:none;stroke:var(--navy);stroke-width:1}
+.style-blueprint .map>rect:first-of-type{stroke:none}
+.style-blueprint .map pattern rect{stroke-width:.8;opacity:.55}
+.style-blueprint .map g[style*="--ch"] rect{fill:var(--ch-text);fill-opacity:.35;stroke:var(--ch-text);stroke-width:1.5}
+.style-blueprint .map g[stroke-width="5"] path{stroke-width:2.5;stroke-dasharray:18 5 3 5}
+.style-blueprint .map g[stroke-width="3"] circle{fill:var(--ground);stroke-width:1.5}
+.style-blueprint .map>path:last-child{stroke:var(--ch-text);stroke-width:2;stroke-dasharray:10 6}
+.style-blueprint .heroph .sign{position:absolute;right:18px;bottom:18px;width:72px;height:72px;border-radius:50%;border:1.5px solid var(--navy);background:var(--ground);display:flex;align-items:center;justify-content:center;font:600 22px var(--mono);letter-spacing:.04em;color:var(--navy)}
+/* events: a schedule table with callout letters */
+.style-blueprint .evlist{border:var(--lw) solid var(--navy)}
+.style-blueprint .ev{padding:18px 22px;border-bottom:1px solid var(--navy)}.style-blueprint .ev:last-child{border-bottom:0}
+.style-blueprint .evpin{flex:none;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--ch-text);display:flex;align-items:center;justify-content:center;font:600 15px var(--mono);color:var(--ch-text)}
+.style-blueprint .evwhen{flex:none;width:150px}.style-blueprint .evwhen p{margin:0;font-size:13px;color:var(--muted)}.style-blueprint .evwhen .sign{font:600 14px var(--mono);color:var(--navy)}
+.style-blueprint .evbody h3{font-size:20px}.style-blueprint .evbody h3 a{color:var(--navy)}
+.style-blueprint .evbody>img{display:none}.style-blueprint .where{font-size:12px}
+/* endorsements: a legend with outlined initials */
+.style-blueprint .endorse .split2{border:var(--lw) solid var(--navy);gap:0}
+.style-blueprint .slateintro{flex:1 1 360px;max-width:none;padding:clamp(22px,3vw,40px);border-right:1px solid var(--navy)}
+.style-blueprint .ballot{padding:6px clamp(20px,3vw,34px)}
+.style-blueprint .ballotrow{padding:16px 0;border-bottom:1px dashed var(--navy)}.style-blueprint .ballotrow:last-child{border-bottom:0}
+.style-blueprint .ini{flex:none;width:52px;height:52px;border:1.5px solid var(--navy);display:flex;align-items:center;justify-content:center;font:600 16px var(--mono);color:var(--navy);background:repeating-linear-gradient(45deg,transparent 0 6px,color-mix(in srgb,var(--ch-text) 22%,transparent) 6px 7px)}
+.style-blueprint .cand{font-size:19px}
+/* issues: numbered detail boxes */
+.style-blueprint .issuegrid{counter-reset:det;gap:0;border-top:var(--lw) solid var(--navy);border-left:var(--lw) solid var(--navy)}
+.style-blueprint .issue{counter-increment:det;padding:22px 22px 26px;border-right:var(--lw) solid var(--navy);border-bottom:var(--lw) solid var(--navy)}
+.style-blueprint .issue:before{content:counter(det);position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--navy);display:flex;align-items:center;justify-content:center;font:600 13px var(--mono);color:var(--navy)}
+.style-blueprint .ititle{font-size:19px;color:var(--navy);margin:0 48px 10px 0}
+.style-blueprint .issue:hover{background:color-mix(in srgb,var(--ch-text) 10%,transparent)}
+.style-blueprint .imore{font-size:12px;color:var(--ch-text);text-decoration:none}.style-blueprint .imore:after{content:" \2192"}
+/* news */
+.style-blueprint .post{border-top:var(--lw) solid var(--navy);padding-top:16px}
+.style-blueprint .post h3{font-size:20px}.style-blueprint .pimg{border:1px solid var(--navy);margin-bottom:12px}
+/* join: a revision cloud in the chapter colour */
+.style-blueprint .joinbox{position:relative;border:2px dashed var(--ch-text);padding:clamp(26px,4vw,44px);margin-top:16px}
+.style-blueprint .joinbox:after{content:"Rev. A \00B7  Action required";position:absolute;top:-12px;right:24px;padding:2px 10px;background:var(--ground);font:600 11px/1.6 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ch-text)}
+/* cards and single blocks */
+.style-blueprint .card,.style-blueprint .signupbox,.style-blueprint .emptybox,.style-blueprint .contact{background:transparent}
+.style-blueprint .card h3{font-family:var(--font-sign);font-stretch:118%;text-transform:uppercase;font-size:18px;letter-spacing:.03em}
+.style-blueprint .person .av{border-radius:50%;background:transparent;font-family:var(--mono);color:var(--ch-text);border-color:var(--ch-text)}
+.style-blueprint .stat{border-top:1.5px solid var(--navy)}.style-blueprint .stat .num{font-family:var(--mono);font-weight:500}
+.style-blueprint .quote blockquote{border-left:2px solid var(--ch-text)}
+.style-blueprint .tablewrap table{background:transparent}.style-blueprint .tablewrap th{background:transparent;color:var(--navy);font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.style-blueprint .result.r-won,.style-blueprint .result.r-passed,.style-blueprint .tags a:hover{background:var(--navy);color:var(--ground)}
+.style-blueprint .contact input,.style-blueprint .contact textarea{background:transparent;color:var(--ink)}
+.style-blueprint .divider{border-top-style:dashed}
+/* footer: a title block */
+.style-blueprint footer{padding:36px 0 40px}
+.style-blueprint .fgrid{display:flex;flex-wrap:wrap;border:2px solid var(--navy)}
+.style-blueprint .cell{flex:1 1 170px}
+.style-blueprint .cell{padding:12px 16px;border-right:1px solid var(--navy);border-bottom:1px solid var(--navy);font-size:14px;line-height:1.55}
+.style-blueprint .fname{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 24px}
+.style-blueprint .fname:after{content:"Drawn by volunteers \00B7  Checked by neighbors \00B7  Sheet 1 of 1";font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.style-blueprint .foot-name{font-size:22px;color:var(--navy)}
+.style-blueprint .flabel{font-size:10.5px;color:var(--muted)}
+@media(max-width:600px){.style-blueprint .ev{padding:16px}.style-blueprint .evwhen{width:auto}.style-blueprint .slateintro{border-right:0;border-bottom:1px solid var(--navy)}}
+
+/* light linework on the dark print */
+.style-blueprint{--navy:#eaf1ff;--ink:#f4f7ff;color:var(--ink);background-color:var(--ground)}
+.style-blueprint{background-image:linear-gradient(rgba(255,255,255,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.13) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px}
+.style-blueprint a:hover{color:var(--ch-text)}
+.style-blueprint .announce{background:var(--deep);border-bottom:1px solid var(--navy);font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.style-blueprint .top{border-bottom:1.5px solid var(--navy)}
+.style-blueprint .bname .sign{font-size:18px}
+.style-blueprint .bname:before{content:"Drawing no. 001";font:500 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.style-blueprint .tagline{font-size:13px;color:var(--muted)}
+.style-blueprint .ddm{background:var(--deep)}
+.style-blueprint .herotext h1{font-size:clamp(38px,4.8vw,64px);line-height:1.02}
+.style-blueprint .heroph{background:var(--deep)}
+/* photos as cyanotypes: light tones printed onto the ground */
+.style-blueprint :is(.duo,.pimg,.card>a:first-child,.imgfig,.gallery figure){background:var(--ground)}
+.style-blueprint :is(.duo img,.pimg img,.card img,.imgfig img,.gallery img,.detail img.cover){filter:grayscale(1) contrast(1.15) brightness(1.05);mix-blend-mode:screen;opacity:.92}
+.style-blueprint footer{background:var(--deep);border-top:1.5px solid var(--navy)}
+.style-blueprint ::selection{background:var(--ch);color:var(--on-ch)}
